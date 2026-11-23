@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  inbox-triage:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - MOCK_MODE=true
+      - DATABASE_URL=sqlite+aiosqlite:///./data/inbox_triage.db
+      - EMAIL_SOURCE_PATH=./data/synthetic_emails.json
+      # Uncomment and set for real LLM usage:
+      # - MOCK_MODE=false
+      # - LLM_PROVIDER=openai
+      # - OPENAI_API_KEY=${OPENAI_API_KEY}
+    volumes:
+      - inbox_data:/app/data
+    restart: unless-stopped
+
+volumes:
+  inbox_data:
